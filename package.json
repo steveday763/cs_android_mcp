@@ -1,0 +1,40 @@
+{
+  "name": "cs-android-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for Android Code Search (cs.android.com)",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "bin": {
+    "cs-android-mcp": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc && node dist/index.js",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "keywords": [
+    "mcp",
+    "android",
+    "code-search",
+    "cs.android.com",
+    "model-context-protocol"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/steveday763/cs_android_mcp.git"
+  },
+  "homepage": "https://github.com/steveday763/cs_android_mcp",
+  "license": "MIT"
+}
