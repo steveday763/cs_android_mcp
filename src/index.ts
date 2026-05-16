@@ -236,19 +236,34 @@ server.setRequestHandler(ListResourcesRequestSchema, async () => {
   return {
     resources: [
       {
-        uri: 'android://android/platform/superproject/main/main/frameworks/base/core/java/android/app/Activity.java',
+        uri: androidResourceUri(
+          'android',
+          'platform/superproject',
+          'main',
+          'frameworks/base/core/java/android/app/Activity.java'
+        ),
         name: 'Activity.java',
         description: 'Android Activity base class source code',
         mimeType: 'text/x-java',
       },
       {
-        uri: 'android://android/platform/superproject/main/main/frameworks/base/core/java/android/view/View.java',
+        uri: androidResourceUri(
+          'android',
+          'platform/superproject',
+          'main',
+          'frameworks/base/core/java/android/view/View.java'
+        ),
         name: 'View.java',
         description: 'Android View base class source code',
         mimeType: 'text/x-java',
       },
       {
-        uri: 'android://android/platform/superproject/main/main/frameworks/base/core/java/android/content/Context.java',
+        uri: androidResourceUri(
+          'android',
+          'platform/superproject',
+          'main',
+          'frameworks/base/core/java/android/content/Context.java'
+        ),
         name: 'Context.java',
         description: 'Android Context abstract class source code',
         mimeType: 'text/x-java',
@@ -261,13 +276,7 @@ server.setRequestHandler(ListResourcesRequestSchema, async () => {
 server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
   const uri = request.params.uri;
 
-  // Parse URI: android://project/repository/branch/path
-  const match = uri.match(/^android:\/\/([^/]+)\/(.+?)\/([^/]+)\/(.+)$/);
-  if (!match) {
-    throw new Error(`Invalid resource URI: ${uri}`);
-  }
-
-  const [, project, repository, branch, path] = match;
+  const { project, repository, branch, path } = parseAndroidResourceUri(uri);
 
   const response = await getFileContents(project, repository, branch, path);
 
@@ -281,6 +290,45 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
     ],
   };
 });
+
+function androidResourceUri(
+  project: string,
+  repository: string,
+  branch: string,
+  path: string
+): string {
+  const params = new URLSearchParams({ project, repository, branch, path });
+  return `android://source?${params.toString()}`;
+}
+
+function parseAndroidResourceUri(uri: string): {
+  project: string;
+  repository: string;
+  branch: string;
+  path: string;
+} {
+  let url: URL;
+  try {
+    url = new URL(uri);
+  } catch {
+    throw new Error(`Invalid resource URI: ${uri}`);
+  }
+
+  if (url.protocol !== 'android:' || url.hostname !== 'source') {
+    throw new Error(`Invalid resource URI: ${uri}`);
+  }
+
+  const project = url.searchParams.get('project');
+  const repository = url.searchParams.get('repository');
+  const branch = url.searchParams.get('branch');
+  const path = url.searchParams.get('path');
+
+  if (!project || !repository || !branch || !path) {
+    throw new Error(`Invalid resource URI: ${uri}`);
+  }
+
+  return { project, repository, branch, path };
+}
 
 function formatSearchResults(response: SearchResponse): string {
   if (!response.searchResults || response.searchResults.length === 0) {

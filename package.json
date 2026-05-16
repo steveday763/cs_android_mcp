@@ -1,6 +1,6 @@
 {
   "name": "cs-android-mcp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "MCP server for Android Code Search (cs.android.com)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
