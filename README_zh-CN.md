@@ -28,6 +28,19 @@
 claude mcp add cs-android -- npx -y cs-android-mcp
 ```
 
+### Cursor
+
+```json
+{
+  "mcpServers": {
+    "cs-android": {
+      "command": "npx",
+      "args": ["-y", "cs-android-mcp"]
+    }
+  }
+}
+```
+
 ### 其他 MCP 客户端
 
 任何兼容 MCP 协议的客户端均可通过 stdio 接入：
