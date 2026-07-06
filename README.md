@@ -28,6 +28,19 @@ A Model Context Protocol (MCP) server for searching and browsing Android source 
 claude mcp add cs-android -- npx -y cs-android-mcp
 ```
 
+### Cursor
+
+```json
+{
+  "mcpServers": {
+    "cs-android": {
+      "command": "npx",
+      "args": ["-y", "cs-android-mcp"]
+    }
+  }
+}
+```
+
 ### Other MCP Clients
 
 Any MCP-compatible client can use the stdio transport:
